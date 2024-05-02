@@ -1,18 +1,75 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private Rigidbody playerRb;
+    private SpyroInputs spyroInput;
+
+    public float speed = 5f;
+    public bool onGround;
+
+    private void Awake()
     {
-        
+        playerRb = GetComponent<Rigidbody>();
+        spyroInput = new SpyroInputs();
+        //enable input action
+        spyroInput.Enable();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Move(InputAction.CallbackContext context)
     {
-        
+        Vector2 moveVector = context.ReadValue<Vector2>();
+        playerRb.transform.Translate(new Vector3 (moveVector.x, 0, moveVector.y));
     }
+
+    private void FixedUpdate()
+    {
+       Vector2 moveVector = spyroInput.InGame.Move.ReadValue<Vector2>();
+        playerRb.transform.Translate(new Vector3 (moveVector.x, 0, moveVector.y) * speed * Time.deltaTime);
+
+       
+
+    }
+
+    //Will make the playher jump
+    public void Jump(InputAction.CallbackContext context)
+    {
+        if (context.performed && onGround)
+        {
+            playerRb.AddForce(Vector3.up * 8f, ForceMode.Impulse);
+            onGround = false;   
+        }
+    }
+
+    //The player will slowly fall to the ground
+    //Player can move as they fall
+    //Can only be done when airborne
+    public void Glide(InputAction.CallbackContext context)
+    {
+        if (context.performed && !onGround)
+        {
+
+        }
+    }
+
+
+    //Player will enter into a charge state upon pressing the input key.
+    //Can be done from a standstill w/o walking
+    public void Charge(InputAction.CallbackContext context)
+    {
+
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            onGround = true;
+        }
+    }
+
+
 }
