@@ -65,12 +65,12 @@ public partial class @SpyroInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Charge"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""f477424a-adb9-4311-b955-1ae2e4d25cc3"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [

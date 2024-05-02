@@ -7,8 +7,10 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody playerRb;
     private SpyroInputs spyroInput;
+    public GameObject fireBall;
 
     public float speed = 5f;
+    public float chargeSpeed = 10f;
     public bool onGround;
 
     private void Awake()
@@ -31,10 +33,12 @@ public class PlayerController : MonoBehaviour
         playerRb.transform.Translate(new Vector3 (moveVector.x, 0, moveVector.y) * speed * Time.deltaTime);
 
        
+       
+
 
     }
 
-    //Will make the playher jump
+    //Will make the player jump
     public void Jump(InputAction.CallbackContext context)
     {
         if (context.performed && onGround)
@@ -51,7 +55,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed && !onGround)
         {
-
+            
         }
     }
 
@@ -60,7 +64,24 @@ public class PlayerController : MonoBehaviour
     //Can be done from a standstill w/o walking
     public void Charge(InputAction.CallbackContext context)
     {
+        if (context.performed && onGround)
+        {
+            playerRb.AddForce(Vector3.forward * chargeSpeed, ForceMode.Force);
+            Debug.Log("Charging has started");
+        }
+        else
+        {
 
+            Debug.Log("Charging has ended");
+        }
+    }
+
+    public void FireBall(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            Instantiate(fireBall);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
